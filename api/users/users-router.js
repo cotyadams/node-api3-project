@@ -21,11 +21,11 @@ router.get('/:id', (req, res) => {
   res.status(200).json(req.user);
 });
 
-router.post('/', validateUser, (req, res) => {
+router.post('/', validateUser, async (req, res) => {
   // RETURN THE NEWLY CREATED USER OBJECT
   // this needs a middleware to check that the request body is valid
-  User.insert(req.body)
-  res.status(201).json(req.body);
+  let user = await User.insert(req.body)
+  res.status(201).json(user);
 });
 
 
@@ -37,7 +37,6 @@ router.put('/:id', validateUserId, validateUser, async (req, res) => {
   // RETURN THE FRESHLY UPDATED USER OBJECT
   // this needs a middleware to verify user id
   // and another middleware to check that the request body is valid
-  console.log(req.params.id);
   res.status(200).json(await User.update(req.params.id, req.body.name));
 });
 
